@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Journey!!</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Times New Roman", serif;
+        background-color: #fff;
+      }
+
+      header {
+        width: 100%;
+        background-color: #000;
+        padding: 10px;
+      }
+
+      header nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        max-width: 98%;
+      }
+
+      header nav a {
+        padding: 10px 15px;
+        background-color: white;
+        color: black;
+        border-radius: 10px;
+        font-weight: bold;
+        text-decoration: none;
+        text-align: center;
+        flex-grow: 1;
+        margin: 5px;
+      }
+
+      header nav a.active {
+        background-color: #00e0c6;
+        color: black;
+      }
+
+      nav a:hover {
+        background: #e5e5e5;
+        color: black;
+      }
+
+      .search-box {
+        display: flex;
+        align-items: center;
+        border: 3px solid #000000;
+        padding: 6px 15px;
+        border-radius: 8px;
+        margin-top: 20px; /* Jarak dari atas */
+        margin-bottom: 20px; /* Jarak dari bawah */
+        background-color: #ffffff;
+        color: #fff;
+        flex-grow: 15;
+        max-width: 200px;
+      }
+
+      .search-box input {
+        border: none;
+        background: transparent;
+        color: rgb(0, 0, 0);
+        margin-left: 8px;
+        width: 100%;
+        outline: none;
+      }
+
+      .search-box input::placeholder {
+        color: #999;
+      }
+
+      .search-icon img {
+        width: 18px;
+        height: 18px;
+      }
+
+      .title {
+        text-align: center;
+        font-size: 50px;
+        font-weight: bold;
+        margin-top: 30px;
+      }
+
+      .title span {
+        color: red; /* fallback biasa */
+        background: linear-gradient(
+          to right,
+          #bb3333,
+          #bb3333,
+          #104eba,
+          #104eba,
+          #bb3333,
+          #ddd500,
+          #000000,
+          #000000
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 40px;
+        gap: 40px;
+      }
+
+      .left {
+        width: 55%;
+        font-family: "Times New Roman", serif;
+        font-size: 18px;
+        line-height: 1.5;
+      }
+
+      .right {
+        width: 30%;
+        position: relative;
+        min-height: 470px;
+      }
+
+      .image-stack {
+        position: absolute;
+        bottom: 100px;
+        left: 0px;
+      }
+
+      .front-image {
+        position: absolute;
+        top: -340px;
+        left: -100px;
+        width: 315px;
+      }
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .front-image {
+          position: relative;
+          top: 10px;
+          left: 30px;
+          width: 180px;
+        }
+
+        .bg-image {
+          width: 50px;
+        }
+
+        .text-area {
+          text-align: justify;
+          padding: 0 15px;
+        }
+      }
+
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 60px;
+      }
+
+      .section-container {
+        width: 90%;
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 30px;
+        border: 5px solid black;
+        border-radius: 10px;
+        text-align: center;
+        background-color: #0f4c4c;
+      }
+
+      .section-container h1 {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 40px;
+        color: black;
+      }
+
+      .albums {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+
+      .album-box {
+        background-color: white;
+        border-radius: 12px;
+        overflow: hidden;
+        width: 300px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        position: relative;
+      }
+
+      .album-box.black {
+        background-color: black;
+      }
+
+      .album-image-container {
+        position: relative;
+        height: 180px;
+        overflow: hidden;
+      }
+
+      .album-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .overlay-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 18px;
+        font-family: Georgia, serif;
+        opacity: 0;
+        transition: 0.3s ease;
+      }
+
+      .album-box:hover .overlay-text {
+        opacity: 1;
+      }
+
+      .album-title {
+        font-weight: bold;
+        font-size: 18px;
+        color: black;
+        margin: 15px 0;
+      }
+
+      .album-box.black .album-title {
+        color: white;
+      }
+
+      .gallery {
+        display: none;
+        margin-top: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+      }
+
+      .gallery img {
+        width: 150px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Responsif untuk HP */
+      @media (max-width: 600px) {
+        .navbar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .nav-item,
+        .search-box {
+          width: 100%;
+          text-align: center;
+          justify-content: flex-end;
+        }
+      }
+
+      body {
+        font-family: "Times New Roman", serif;
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+      }
+
+      .ikut-kits-section {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 40px;
+        gap: 40px;
+      }
+
+      .gallery-box {
+        position: relative;
+        width: 300px;
+        height: 200px;
+        padding: 20px;
+        border: 8px solid #0f5656; /* atau warna lain yang kamu mau */
+        border-radius: 10px;
+        overflow: hidden;
+        cursor: pointer;
+        background-color: #004d4d;
+        transition: transform 0.3s;
+      }
+
+      .gallery-box:hover {
+        transform: scale(1.03);
+      }
+
+      .gallery-box img {
+        width: 100%;
+        height: 88%;
+        object-fit: cover;
+      }
+
+      .gallery-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .gallery-box:hover .gallery-overlay {
+        opacity: 1;
+      }
+
+      .overlay-text {
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-family: "Times New Roman", serif;
+        font-size: 19px;
+        opacity: 0.8;
+      }
+
+      .gallery-caption {
+        color: white;
+        margin-top: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+      }
+      .text-kits {
+        max-width: 500px;
+        line-height: 1.6;
+        text-align: justify;
+        font-size: 18px;
+      }
+
+      .modal-gallery {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        overflow-y: scroll;
+        padding: 40px 20px;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 1000px;
+        height: 270%;
+        margin: auto;
+      }
+
+      .modal-gallery h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .photo-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+      }
+
+      .photo-grid img {
+        width: 185px;
+        height: 110px;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+
+      .close-btn {
+        display: block;
+        margin: 20px auto 0;
+        padding: 8px 20px;
+        background-color: #0f5656;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .close-btn:hover {
+        background-color: #006666;
+      }
+
+      @media screen and (max-width: 768px) {
+        .ikut-kits-section {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .text-kits {
+          max-width: 90%;
+        }
+      }
+
+      .random-section {
+        margin-top: 60px;
+        text-align: center;
+        padding: 40px 20px;
+      }
+
+      .gray-line {
+        height: 5px;
+        width: 90%;
+        background-color: #bfbfbf;
+        margin: 0 auto 20px;
+      }
+
+      .random-title {
+        font-family: "Times New Roman", serif;
+        font-size: 50px;
+        font-weight: bold;
+        background: linear-gradient(to right, #670072, #4b8dff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 40px;
+      }
+
+      .random-gallery img {
+        width: 80%;
+        max-width: 800px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .ndaki-section {
+        padding: 60px 30px;
+        text-align: center;
+        font-family: "Times New Roman", serif;
+      }
+
+      .ndaki-title {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 40px;
+      }
+
+      .ndaki-gallery-row {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .ndaki-gallery-row img {
+        width: 300px;
+        height: 199px;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column; /* Agar vertikal (atas-bawah) */
+        gap: 20px; /* Jarak antar konten */
+      }
+
+      footer {
+        background-color: #000000;
+        color: white;
+        padding: 5px 5px;
+        text-align: center;
+        font-size: 0.85rem;
+      }
+
+      .social-icons {
+        margin-top: 10px;
+      }
+
+      .social-icons a {
+        margin: 0 8px;
+        display: inline-block;
+      }
+
+      .social-icons img {
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="index.html">About me</a>
+        <a href="pengalaman.html">Pengalaman</a>
+        <a href="kemampuan.html">Kemampuan</a>
+        <a href="sertifikat.html">Sertifikat</a>
+        <a href="kontak.html">Kontak</a>
+        <a href="kegiatan.html" class="active">Kegiatan</a>
+      </nav>
+    </header>
+    <div class="search-box">
+      <span class="search-icon">
+        <img src="images/logo search.png" alt="Search Icon" />
+      </span>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Type / to search"
+        class="search-input"
+      />
+    </div>
+    <script>
+      document
+        .getElementById("searchInput")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            const keyword = e.target.value.toLowerCase();
+
+            // Daftar kata kunci dan aksi
+            if (
+              keyword.includes("zahra putri asifa") ||
+              keyword.includes("zahra")
+            ) {
+              window.location.href = "index.html";
+            } else if (
+              keyword.includes("my journey") ||
+              keyword.includes("journey")
+            ) {
+              document
+                .querySelector(".title")
+                .scrollIntoView({ behavior: "smooth" });
+            } else if (
+              keyword.includes("belajar") ||
+              keyword.includes("nge lab") ||
+              keyword.includes("belajar bareng") ||
+              keyword.includes("album")
+            ) {
+              document
+                .querySelector(".section-container")
+                .scrollIntoView({ behavior: "smooth" });
+            } else if (
+              keyword.includes("kits") ||
+              keyword.includes("ekstra") ||
+              keyword.includes("ekstakulikuler")
+            ) {
+              document
+                .querySelector(".kits-left")
+                .scrollIntoView({ behavior: "smooth" });
+            } else if (keyword.includes("random")) {
+              document
+                .querySelector(".random-section")
+                .scrollIntoView({ behavior: "smooth" });
+            } else if (
+              keyword.includes("first time") ||
+              keyword.includes("pecinta alam")
+            ) {
+              document
+                .querySelector(".ndaki-section")
+                .scrollIntoView({ behavior: "smooth" });
+            } else {
+              alert("Maaf, kata kunci tidak ditemukan.");
+            }
+          }
+        });
+    </script>
+
+    <h1 class="title"><span>My Journey!!</span></h1>
+    <div class="wrap">
+      <div class="left">
+        <p>
+          “Hai guys disini aku mau nyeritain dan berbagi momen secara singkat
+          kepada kalian!! <br />yang pernah aku alami selama ini. Mulai dari aku
+          di sekolah ngapain aja, pernah ikut apa aja di sekolah, <br />keseruan
+          aku sama temen-temen di sekolah, ngerjain projek, pengalaman first
+          time ngapain aja, dll.
+        </p>
+
+        <p>
+          udah deh pokok nya gitu hehe nanti kalian juga tau kalau udah scroll
+          web ini, o iya kalau<br />
+          kalian lihat di sebelah kanan ada fotoku yang sedang membawa buku
+          MTCNA itu adalah buku/Modul <br />pertamaku yang aku buat saat aku
+          berumur 16 tahun,<br />
+          selain buku itu aku juga buat Modul Debian 11 yang sekarang aku simpan
+          di meja kamarku
+        </p>
+
+        <p>
+          Nah itu adalah cerita awal untuk pembukaan web ini. Ok guys silahkan
+          scroll ke bawah<br />
+          dan semoga My Journey ini bisa tersampaikan dengan baik ke kalian
+          yaa..”
+        </p>
+      </div>
+
+      <div class="right">
+        <!-- Kotak Foto -->
+        <div class="image-stack">
+          <img src="images/fotoku.png" class="front-image" />
+        </div>
+      </div>
+      <script>
+        document.addEventListener("keydown", function (e) {
+          if (
+            e.key === "/" &&
+            !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)
+          ) {
+            e.preventDefault();
+            document.getElementById("searchInput").focus();
+          }
+        });
+      </script>
+    </div>
+
+    <div class="wrapper">
+      <!-- Bagian Pertama -->
+      <div class="section-container">
+        <h1>Belajar & Nge LAB</h1>
+        <div class="albums">
+          <div class="album-box black" onclick="toggleGallery('gallery1')">
+            <div class="album-image-container">
+              <img src="images/album1.jpeg" alt="Album 1" />
+              <div class="overlay-text">click here for more</div>
+            </div>
+            <div class="album-title">Album 1</div>
+          </div>
+
+          <div class="album-box" onclick="toggleGallery('gallery2')">
+            <div class="album-image-container">
+              <img src="images/album2.jpeg" alt="Album 2" />
+              <div class="overlay-text">click here for more</div>
+            </div>
+            <div class="album-title">Album 2</div>
+          </div>
+        </div>
+
+        <div id="gallery1" class="gallery">
+          <img src="images/1.jpeg" alt="" />
+          <img src="images/2.jpeg" alt="" />
+          <img src="images/3.jpeg" alt="" />
+          <img src="images/4.jpeg" alt="" />
+          <img src="images/5.jpeg" alt="" />
+          <img src="images/6.jpeg" alt="" />
+          <img src="images/7.jpeg" alt="" />
+          <img src="images/8.jpeg" alt="" />
+          <img src="images/9.jpeg" alt="" />
+          <img src="images/10.jpeg" alt="" />
+          <img src="images/11.jpeg" alt="" />
+          <img src="images/12.jpeg" alt="" />
+          <img src="images/13.jpeg" alt="" />
+          <img src="images/14.jpeg" alt="" />
+          <img src="images/15.jpeg" alt="" />
+          <img src="images/16.jpeg" alt="" />
+          <img src="images/17.jpeg" alt="" />
+        </div>
+
+        <div id="gallery2" class="gallery">
+          <img src="images/18.jpeg" alt="" />
+          <img src="images/19.jpeg" alt="" />
+          <img src="images/20.jpeg" alt="" />
+          <img src="images/21.jpeg" alt="" />
+          <img src="images/22.jpeg" alt="" />
+          <img src="images/23.jpeg" alt="" />
+          <img src="images/24.jpeg" alt="" />
+          <img src="images/25.jpeg" alt="" />
+          <img src="images/26.jpeg" alt="" />
+          <img src="images/27.jpeg" alt="" />
+          <img src="images/28.jpeg" alt="" />
+          <img src="images/29.jpeg" alt="" />
+          <img src="images/30.jpeg" alt="" />
+          <img src="images/31.jpeg" alt="" />
+          <img src="images/32.jpeg" alt="" />
+          <img src="images/33.jpeg" alt="" />
+          <img src="images/34.jpeg" alt="" />
+        </div>
+      </div>
+
+      <script>
+        function toggleGallery(id) {
+          const allGalleries = document.querySelectorAll(".gallery");
+          allGalleries.forEach((gal) => (gal.style.display = "none"));
+          const selected = document.getElementById(id);
+          selected.style.display = "flex";
+        }
+      </script>
+
+      <!-- Section KITS -->
+      <div class="ikut-kits-section">
+        <!-- Galeri KITS -->
+        <div onclick="showGallery()" style="text-align: center">
+          <div class="gallery-box">
+            <img src="images/galery kits.png" alt="Gallery KITS" />
+            <div class="gallery-overlay">click here for more</div>
+            <h3 class="gallery-caption">Gallery KITS</h3>
+          </div>
+        </div>
+
+        <!-- Paragraf KITS -->
+        <div class="text-kits">
+          <h2>Ikut KITS</h2>
+          <p>
+            “Jadi pas kelas 10 aku ikut ekstrakulikuler KITS (Komunitas IT SMKN
+            1Nglegok) disini kita diajari untuk mempelajari lebih dalam lagi
+            tentang dunia IT bukan hanya belajar tetapi kita juga diajari
+            bagaimana cara menata sebuah organisasi yang baik dan kita juga
+            diajari tentang Problem Solving. Kita juga ada proker-proker lainnya
+            yang bisa menambah wawasan tentang bagaimana membuat acara,
+            plan-plan yang harus disiapkan jika ada kendala terjadi dan masih
+            banyak lagi. KITS juga tidak hanya melulu belajar tetapi setiap satu
+            tahun 2 kali kita diajak keluar untuk Outbound dan menjelajah ke
+            alam.”
+          </p>
+        </div>
+      </div>
+
+      <!-- Modal Galeri -->
+      <div class="modal-gallery" id="galleryModal">
+        <div class="modal-content">
+          <h2>Gallery KITS</h2>
+          <div class="photo-grid">
+            <!-- Ganti src dengan 19 foto -->
+            <img src="images/k1.jpeg" alt="" />
+            <img src="images/k2.jpeg" alt="" />
+            <img src="images/k3.jpeg" alt="" />
+            <img src="images/k4.jpeg" alt="" />
+            <img src="images/k5.jpeg" alt="" />
+            <img src="images/k6.jpeg" alt="" />
+            <img src="images/k7.jpeg" alt="" />
+            <img src="images/k8.jpeg" alt="" />
+            <img src="images/k9.jpeg" alt="" />
+            <img src="images/k10.jpeg" alt="" />
+            <img src="images/k11.jpeg" alt="" />
+            <img src="images/k12.jpeg" alt="" />
+            <img src="images/k13.jpeg" alt="" />
+            <img src="images/k14.jpeg" alt="" />
+            <img src="images/k15.png" alt="" />
+            <img src="images/k16.png" alt="" />
+            <img src="images/k17.jpg" alt="" />
+            <img src="images/k18.jpeg" alt="" />
+            <img src="images/k19.jpeg" alt="" />
+          </div>
+          <button class="close-btn" onclick="hideGallery()">Tutup</button>
+        </div>
+      </div>
+
+      <!-- JavaScript -->
+      <script>
+        function showGallery() {
+          document.getElementById("galleryModal").style.display = "block";
+        }
+
+        function hideGallery() {
+          document.getElementById("galleryModal").style.display = "none";
+        }
+      </script>
+
+      <div class="container"></div>
+      <div class="random-section">
+        <div class="gray-line"></div>
+        <h2 class="random-title">Random</h2>
+        <div class="random-gallery">
+          <img src="images/foto random.png" alt="Kumpulan Foto Random" />
+        </div>
+      </div>
+    </div>
+
+    <div class="ndaki-section">
+      <h2 class="ndaki-title">First Time Ndaki!</h2>
+
+      <!-- Baris Pertama: 3 Gambar -->
+      <div class="ndaki-gallery-row">
+        <img src="images/d1.jpeg" alt="Foto Ndaki 1" />
+        <img src="images/d2.jpeg" alt="Foto Ndaki 2" />
+        <img src="images/d3.jpeg" alt="Foto Ndaki 3" />
+      </div>
+
+      <!-- Baris Kedua: 2 Gambar -->
+      <div class="ndaki-gallery-row">
+        <img src="images/d4.jpeg" alt="Foto Ndaki 4" />
+        <img src="images/d5.jpeg" alt="Foto Ndaki 5" />
+      </div>
+    </div>
+    <footer>
+      <p>Copyright © 2025 zahraputriasifa | All Rights Reserved</p>
+      <div class="social-icons">
+        <a href="https://www.instagram.com/zahraputriz._asf" target="_blank">
+          <img src="images/instagramputih.png" alt="Instagram" />
+        </a>
+        <a href="mailto:zp90866@gmail.com">
+          <img src="images/emailputih.png" alt="Email" />
+        </a>
+        <a href="https://zahraputriasifa123.blogspot.com/" target="_blank">
+          <img src="images/bloggerputih.png" alt="blogger" />
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>
